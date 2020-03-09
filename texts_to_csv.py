@@ -1,5 +1,4 @@
 import argparse
-import logging
 from nltk import word_tokenize
 import numpy as np
 import os
@@ -82,13 +81,17 @@ def get_metadata(filename: str, file: str) -> List:
     return metalist + [textlength, text]
 
 def speeches_to_df(path: str, 
-                   zip_file: Optional[str] = "German-Political-Speeches-Corpus.zip",
-                   remote_dataset: Optional[str] = "Bundesregierung.xml") -> str:
-    """ INFO: The code was adopted in a modified form 
+                   remote_dataset: Optional[str] = "Bundesregierung.xml") -> pd.DataFrame:
+    """ Takes a path to the Zipfile 'German-Political-Speeches-Corpus.zip' and 
+        returns a DataFrame. Only the XML-file 'Bundesregierung.xml' will be used.
+
+
+        INFO: The code was adopted in a modified form 
         from the following website: https://www.timmer-net.de/2019/03/24/nlp_basics/
     """
-    logging.info("Writing speeches to DataFrame.")
     df = None
+
+    zip_file = "German-Political-Speeches-Corpus.zip"
 
     zip_path = os.path.join(path, zip_file)
 
@@ -103,10 +106,9 @@ def speeches_to_df(path: str,
                             'title' : [t['@titel'] for t in nodes],
                             'text' : [t['rohtext'] for t in nodes]})
 
-    logging.info("Finished writing speeches to DataFrame.")
     return df
 
-def texts_to_df(path: str) -> str:
+def texts_to_df(path: str) -> pd.DataFrame:
     """ Takes a path to a directory of text files and saves
         the metadata and the corresponding text into a
         DataFrame.
@@ -116,7 +118,6 @@ def texts_to_df(path: str) -> str:
 
     # pare file_list and add meta data with text to dict
     for c, filename in enumerate(file_list):
-        logging.info(f"Text {c+1} von {len(file_list)}.")
 
         file_dir = path + "/" + filename + ".txt"
         with open(file_dir, encoding="utf-8") as f:
