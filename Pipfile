@@ -6,6 +6,14 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
+nltk = "*"
+numpy = "*"
+pandas = "*"
+pathlib = "*"
+re = "*"
+urllib = "*"
+xmltodict = "*"
+zipfile36 = "*"
 
 [requires]
 python_version = "3.8"
