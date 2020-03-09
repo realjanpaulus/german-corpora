@@ -22,7 +22,9 @@ I'm not the author of most of the corpora. The authors of the respective origina
 | speeches | speaker| speech |
 | ... | ... | ... |
 
-## Usage of texts_to_csv.py
+## Usage
+
+```
 
 $ python texts_to_csv.py -h
 usage: texts_to_csv [-h] [--corpus_name CORPUS_NAME] path
@@ -38,5 +40,11 @@ optional arguments:
                         Indicates the corpus type. Default is 'prose'. Other value are
                         'speeches'.
 
+```
 
+### Requirements
+
+Required: Python 3.6+
+
+TODO: requirements.txt / Pipfile
 
