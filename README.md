@@ -10,7 +10,7 @@ I'm not the author of most of the corpora. The authors of the respective origina
 
 
 | corpus | original name | author(s) | content | source | license | changes |
-| --- |---| ---| --- | --- |
+| --- | --- | --- | --- | --- | --- | --- |
 | german_news | 10kGNAD | Timo Block | 10273 german language news articles, divided into 9 categories | [Link](https://tblock.github.io/10kGNAD/) | CC BY-NC-SA 4.0 | Replaced semicolon delimiter with comma delimiter. |
 | german_prose | Corpus of German-Language Fiction | Frank Fischer, Jannik Strötgen | 2735 german prose works from 548 different german authors. |[Link](https://figshare.com/articles/Corpus_of_German-Language_Fiction_txt_/4524680/1) | CC BY 4.0 | Only prose texts from the folder 'corpus-of-german-fiction-txt' where used i.e. only texts from german authors. |
 | german_speeches | German Political Speeches Corpus | Adrien Barbaresi | 2983 speeches from 46 different german speakers. ||[Link](https://adrien.barbaresi.eu/corpora/speeches/#data) | CC BY-SA 4.0 | Only speeches from the file "Bundesregierung.xml" were used. |
