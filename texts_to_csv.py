@@ -169,7 +169,6 @@ def speeches_to_df(path: str,
     return df
 
 
-
 def main():
 
     # TODO: evtl. mehr corpora hinzufügen
