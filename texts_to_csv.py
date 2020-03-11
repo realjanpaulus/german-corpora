@@ -14,8 +14,6 @@ import zipfile
 
 ### texts_to_csv logging handler ###
 
-# TODO: überprüfen, es soll nrue einmal logging kommen
-
 logging.basicConfig(level=logging.INFO, filename="texts_to_csv.log", filemode="w")
 console = logging.StreamHandler()
 console.setLevel(logging.INFO)
@@ -98,12 +96,11 @@ def prose_to_df(path: str,
                 used_dataset: Optional[str] = "corpus-of-german-fiction-txt",
                 zip_file: Optional[str] = "CorpusofGermanLanguageFiction.zip",
                 keep_unzipped: Optional[bool] = False) -> pd.DataFrame:
-    """ Takes a path to a directory of text files and saves
-        the metadata and the corresponding text into a
+    """ Takes a path to a zipfile of prose text files and 
+        stores the metadata and the corresponding text into a
         DataFrame.
     """
 
-    #TODO: logging und df weg
     logging.info(f"Extracting zipfile.")
     df = None
 
