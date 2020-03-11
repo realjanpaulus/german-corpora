@@ -8,17 +8,21 @@ I'm not the author of most of the corpora. The authors of the respective origina
 
 ## Corpora sources
 
-| corpus | original name | author(s) | source | changes |
+TODO: content?
+
+| corpus | original name | author(s) | content | source | license | changes |
 | --- |---| ---| --- | --- |
-| german_prose | Corpus of German-Language Fiction | Frank Fischer, Jannik Strötgen | [Link](https://figshare.com/articles/Corpus_of_German-Language_Fiction_txt_/4524680/1) | - |
-| german_speeches | German Political Speeches Corpus | Adrien Barbaresi | [Link](https://adrien.barbaresi.eu/corpora/speeches/#data) | Only speeches from the file "Bundesregierung.xml" were used. |
-| german_wiki | wikicorpus_v2 | Jan Paulus | [Link](https://github.com/realjanpaulus/german_text_classification_nlp) | - |
-| german_wiki_small | smallwikicorpus_v2 | Jan Paulus | [Link](https://github.com/realjanpaulus/german_text_classification_nlp) | - |
+| german_news | 10kGNAD | Timo Block | 10273 german language news articles, divided into 9 categories | [Link](https://tblock.github.io/10kGNAD/) | CC BY-NC-SA 4.0 | - |
+| german_prose | Corpus of German-Language Fiction | Frank Fischer, Jannik Strötgen | 2735 german prose works from 549 different german authors (TODO) |[Link](https://figshare.com/articles/Corpus_of_German-Language_Fiction_txt_/4524680/1) | CC BY 4.0 | Only prose texts from the folder 'corpus-of-german-fiction-txt' where used i.e. only texts from german authors  |
+| german_speeches | German Political Speeches Corpus | Adrien Barbaresi | [Link](https://adrien.barbaresi.eu/corpora/speeches/#data) | CC BY-SA 4.0 | Only speeches from the file "Bundesregierung.xml" were used. |
+| german_wiki | wikicorpus_v2 | Jan Paulus | TODO | [Link](https://github.com/realjanpaulus/german_text_classification_nlp) | - | - |
+| german_wiki_small | smallwikicorpus_v2 | Jan Paulus | TODO | [Link](https://github.com/realjanpaulus/german_text_classification_nlp) | - | - |
 
 ## Structure of the available csv-files
 
 | name | class column name | text column name |
 | --- | --- | --- |
+| *german_news* | label | text |
 | *german_prose* | author | text |
 | *german_speeches* | speaker| speech |
 | *german_wiki* | category | text |
