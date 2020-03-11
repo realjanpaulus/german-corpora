@@ -8,6 +8,7 @@ I'm not the author of most of the corpora. The authors of the respective origina
 
 ## Corpora sources
 
+Every corpus csv file contains the string "german_" before their name (e.g. `german_news.csv`).
 
 | corpus | original name | author(s) | content | source | license | changes |
 | --- | --- | --- | --- | --- | --- | --- |
