@@ -63,8 +63,8 @@ The following table provides information that can be used to create your own cor
 * Call the specified function `speeches_to_csv()` from `texts_to_csv.py`.
 * Perform the specified change, indicated in the `change` column.
 
-| corpus | required files |  | change |
-| --- | --- | --- | --- |
-| news| see [One Million Posts Corpus](https://ofai.github.io/million-post-corpus/), the whole corpus.|||
+| corpus | required files | change |
+| --- | --- | --- | 
+| news| see [One Million Posts Corpus](https://ofai.github.io/million-post-corpus/), the whole corpus. | - |
 | speeches | `German-Political-Speeches-Corpus.zip` (should be in the same folder as `texts_to_csv.py` | set `remote_dateset` to a different XML-file within the XML-file (*Watch out*: It may be necessary to specify other XML tags in the source code.) <br><br> `speeches_to_csv(`<br> `path: str,` <br> `remote_dataset: Optional[str] = "Bundesregierung.xml"`<br>`) -> pd.DataFrame`  |
 | wiki | see [Wikipedia-building-tutorial (only in german)](https://github.com/realjanpaulus/german_text_classification_nlp/blob/master/tutorials/Zusatzkapitel%20-%20Wie%20baue%20ich%20mein%20eigenes%20Wikipediakorpus%3F.ipynb) | - |
