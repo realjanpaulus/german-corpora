@@ -13,9 +13,10 @@ Every corpus csv file contains the string "german_" before their name (e.g. `ger
 | corpus | original name  | author(s) | content | changes |
 | --- | --- | --- | --- | --- |
 | news |  [10kGNAD](https://tblock.github.io/10kGNAD/) (**License**: CC BY-NC-SA 4.0) | Timo Block | 10273 german language news articles, divided into 9 categories | Replaced semicolon delimiter with comma delimiter. |
+| poems | [DLK_v3](https://github.com/tnhaider/DLK) | Thomas Haider, Steffen Eger | 30731 poems in German language by 197 different german and non-german poets. | Poets with less than 6 poems, empty poems and poems without a specific author (= 'N. N.') were removed from the corpus. Poems without titles were titled with "UNTITLED". |
 | prose | [Corpus of German-Language Fiction](https://figshare.com/articles/Corpus_of_German-Language_Fiction_txt_/4524680/1) (**License**: CC BY 4.0)| Frank Fischer, Jannik Strötgen | 1963 german prose works from 148 different german authors. | Only prose texts from the folder 'corpus-of-german-fiction-txt' where used i.e. only texts from german authors. Due to Githhubs file size limitations, authors with less than 6 works were removed from the original corpus (the original corpus contained 2735 german prose works from 549 different german authors). In addition, most of the meta-information at the beginning of each work has been removed. |
 | speeches | [German Political Speeches Corpus](https://adrien.barbaresi.eu/corpora/speeches/#data) (**License**: CC BY-SA 4.0) | Adrien Barbaresi | 2983 speeches from 46 different german speakers. | Only speeches from the file "Bundesregierung.xml" were used. |
-| wiki | [wikicorpus_v2](https://github.com/realjanpaulus/german_text_classification_nlp) | Jan Paulus | 6000 tokenized wikipedia articles, divided into 30 different categories. | Deleted "id" and "Unammed: 0" column. |
+| wiki | [wikicorpus_v2](https://github.com/realjanpaulus/german_text_classification_nlp) | Jan Paulus | 6000 tokenized wikipedia articles, divided into 30 different categories. | Deleted "id" and "Unnamed: 0" column. |
 | wiki_small | [small wikicorpus_v2](https://github.com/realjanpaulus/german_text_classification_nlp) | Jan Paulus | 440 tokenized wikipedia articles, divided into 10 different categories. | Deleted "id" and "Unammed: 0" column. |
 
 ## Structure of the available csv-files
@@ -23,6 +24,7 @@ Every corpus csv file contains the string "german_" before their name (e.g. `ger
 | name | class column name | text column name |
 | --- | --- | --- |
 | *german_news* | label | text |
+| *german_poems* | poet | poem |
 | *german_prose* | author | text |
 | *german_speeches* | speaker| speech |
 | *german_wiki* | category | text |
@@ -65,6 +67,7 @@ The following table provides information that can be used to create your own cor
 
 | corpus | required files | change |
 | --- | --- | --- | 
-| news| see [One Million Posts Corpus](https://ofai.github.io/million-post-corpus/) from which 10kGNAD is extracted. | - |
-| speeches | `German-Political-Speeches-Corpus.zip` (should be in the same folder as `texts_to_csv.py` | set `remote_dateset` to a different XML-file within the XML-file (*Watch out*: It may be necessary to specify other XML tags in the source code.) <br><br> `speeches_to_csv(`<br> `path: str,` <br> `remote_dataset: Optional[str] = "Bundesregierung.xml"`<br>`) -> pd.DataFrame`  |
+| news | see [One Million Posts Corpus](https://ofai.github.io/million-post-corpus/) from which 10kGNAD is extracted. | - |
+| poems | [Github DLK](https://github.com/tnhaider/DLK) | use different corpus json file as `used_dataset` argument for the function `poems_to_df()`. |
+| speeches | `German-Political-Speeches-Corpus.zip` (should be in the same folder as `texts_to_csv.py` | set `remote_dateset` to a different XML-file within the XML-file (*Watch out*: It may be necessary to specify other XML tags in the source code.) |
 | wiki | see [Wikipedia-building-tutorial (only in german)](https://github.com/realjanpaulus/german_text_classification_nlp/blob/master/tutorials/Zusatzkapitel%20-%20Wie%20baue%20ich%20mein%20eigenes%20Wikipediakorpus%3F.ipynb) | - |

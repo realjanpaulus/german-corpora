@@ -1,4 +1,5 @@
 import argparse
+import json
 import logging
 from nltk import word_tokenize
 import numpy as np
@@ -22,6 +23,21 @@ formatter = logging.Formatter("[%(asctime)s] %(levelname)s: %(message)s",
 console.setFormatter(formatter)
 logging.getLogger("").addHandler(console)
 
+
+def clear_string(s: str,
+                 replacement: str) -> str:
+    """ Cleans a string (no linebreaks, no unnecessary space) 
+        and replaces empty strings or NoneType-Objects.
+    """
+
+    if s == None: 
+        s = replacement
+    else:
+        s = " ".join(s.split())
+        if s == None or s == "":
+            s = replacement
+
+    return s
 
 def get_file_list(path: str) -> List[str]:
     """ Returns a list with files of a given directory. """
@@ -91,6 +107,74 @@ def get_metadata(filename: str, file: str) -> List:
     textlength = len(tok_text)
     text = " ".join(tok_text)
     return metalist + [textlength, text]
+
+
+def poems_to_df(path: str,
+                used_dataset: Optional[str] = "deutsches.lyrik.korpus.v3.noduplicates.json"):
+    """ Takes a path to a poem jsonfile and stores the
+        title, author and text into a DataFrame.
+    """
+    logging.info(f"Extracting json file contents.")
+    df = None
+
+    json_path = os.path.join(path, used_dataset)
+
+    tmp = {}
+
+
+    with open(json_path) as jsonfile:
+        data = json.load(jsonfile)
+
+        for k, v in data.items():
+            poet = v["author"]
+            title = v["title"]
+            year = v["year"]
+            poem = " ".join(v["lines"])
+
+
+            title = clear_string(title, "UNTITLED")
+            poet = clear_string(poet, "N.U.")
+            year = clear_string(str(year), "0")
+            year = int(year)
+            poem = clear_string(poem, "NO CONTENT")
+                        
+
+            filename = poet + "_" + title + "_" + str(year)
+
+            if filename not in tmp:
+                tmp[filename] = {"poet" : poet,
+                                 "title" : title,
+                                 "year" : year,
+                                 "poem": poem}
+            else:
+                tmp[filename]["poem"] += poem
+
+
+    tmp2 = {}
+    for k, v in tmp.items():
+        tmp2[k] = [v["poet"],
+                   v["title"],
+                   v["year"],
+                   v["poem"]]
+
+
+    logging.info("Creating the DataFrame.")
+    # dict to dataframe
+    df = pd.DataFrame.from_dict(tmp2, orient="index").reset_index()
+    df.columns = ["filename", "poet", "title", "year", "poem"]  
+
+
+    logging.info(f"Remove poets with less than 6 poems.")
+    df = df.groupby("poet").filter(lambda x: len(x) > 5)
+
+    logging.info(f"Remove poet with no name (= 'N. N.,').")
+    df = df[df["poet"] != 'N. N.,']
+
+    logging.info(f"Remove empty poems.")
+    df = df[df["poem"] != 'NO CONTENT']
+
+    return df  
+
 
 def prose_to_df(path: str,
                 used_dataset: Optional[str] = "corpus-of-german-fiction-txt",
@@ -180,13 +264,17 @@ def main():
         df = speeches_to_df(args.path)
         logging.info(f"Writing csv-file to corpora/")
         df.to_csv("corpora/german_speeches.csv", index=False)
+    elif args.corpus_name == "poems":
+        df = poems_to_df(args.path)
+        logging.info(f"Writing csv-file to corpora/")
+        df.to_csv("corpora/german_poems.csv", index=False)
 
 if __name__ == "__main__":
     
     parser = argparse.ArgumentParser(prog="texts_to_csv", description="Saves text corpora in csv files.")
     parser.add_argument("path", type=str, help="Path to the directories.")
     #TODO: help ergänzen
-    parser.add_argument("--corpus_name", "-cn", type=str, default="prose", help="Indicates the corpus type. Default is 'prose'. Other value are 'speeches'.")
+    parser.add_argument("--corpus_name", "-cn", type=str, default="prose", help="Indicates the corpus type. Default is 'prose'. Other value are 'speeches' and 'poems'.")
     args = parser.parse_args()
 
     main()
