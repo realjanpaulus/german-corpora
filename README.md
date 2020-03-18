@@ -13,10 +13,10 @@ Every corpus csv file contains the string "german_" before their name (e.g. `ger
 | corpus | original name | author(s) | content | source | license | changes |
 | --- | --- | --- | --- | --- | --- | --- |
 | news | 10kGNAD | Timo Block | 10273 german language news articles, divided into 9 categories | [Link](https://tblock.github.io/10kGNAD/) | CC BY-NC-SA 4.0 | Replaced semicolon delimiter with comma delimiter. |
-| prose | Corpus of German-Language Fiction | Frank Fischer, Jannik Strötgen | 1963 german prose works from 148 different german authors. |[Link](https://figshare.com/articles/Corpus_of_German-Language_Fiction_txt_/4524680/1) | CC BY 4.0 | Only prose texts from the folder 'corpus-of-german-fiction-txt' where used i.e. only texts from german authors. Due to Githhubs file size limitations, authors with less than 6 works were removed from the original corpus (the original corpus contained 1963 german prose works from 148 different german authors). |
+| prose | Corpus of German-Language Fiction | Frank Fischer, Jannik Strötgen | 1963 german prose works from 148 different german authors. |[Link](https://figshare.com/articles/Corpus_of_German-Language_Fiction_txt_/4524680/1) | CC BY 4.0 | Only prose texts from the folder 'corpus-of-german-fiction-txt' where used i.e. only texts from german authors. Due to Githhubs file size limitations, authors with less than 6 works were removed from the original corpus (the original corpus contained 2735 german prose works from 549 different german authors). In addition, most of the meta-information at the beginning of each work has been removed. |
 | speeches | German Political Speeches Corpus | Adrien Barbaresi | 2983 speeches from 46 different german speakers. |[Link](https://adrien.barbaresi.eu/corpora/speeches/#data) | CC BY-SA 4.0 | Only speeches from the file "Bundesregierung.xml" were used. |
 | wiki | wikicorpus_v2 | Jan Paulus | 6000 tokenized wikipedia articles, divided into 30 different categories. | [Link](https://github.com/realjanpaulus/german_text_classification_nlp) | - | Deleted "id" and "Unammed: 0" column. |
-| wiki_small | smallwikicorpus_v2 | Jan Paulus | 440 tokenized wikipedia articles, divided into 10 different categories. | [Link](https://github.com/realjanpaulus/german_text_classification_nlp) | - | Deleted "id" and "Unammed: 0" column. |
+| wiki_small | small wikicorpus_v2 | Jan Paulus | 440 tokenized wikipedia articles, divided into 10 different categories. | [Link](https://github.com/realjanpaulus/german_text_classification_nlp) | - | Deleted "id" and "Unammed: 0" column. |
 
 ## Structure of the available csv-files
 
@@ -65,6 +65,6 @@ The following table provides information that can be used to create your own cor
 
 | corpus | required files | change |
 | --- | --- | --- | 
-| news| see [One Million Posts Corpus](https://ofai.github.io/million-post-corpus/), the whole corpus. | - |
+| news| see [One Million Posts Corpus](https://ofai.github.io/million-post-corpus/) from which 10kGNAD is extracted. | - |
 | speeches | `German-Political-Speeches-Corpus.zip` (should be in the same folder as `texts_to_csv.py` | set `remote_dateset` to a different XML-file within the XML-file (*Watch out*: It may be necessary to specify other XML tags in the source code.) <br><br> `speeches_to_csv(`<br> `path: str,` <br> `remote_dataset: Optional[str] = "Bundesregierung.xml"`<br>`) -> pd.DataFrame`  |
 | wiki | see [Wikipedia-building-tutorial (only in german)](https://github.com/realjanpaulus/german_text_classification_nlp/blob/master/tutorials/Zusatzkapitel%20-%20Wie%20baue%20ich%20mein%20eigenes%20Wikipediakorpus%3F.ipynb) | - |
