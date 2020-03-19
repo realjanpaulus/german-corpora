@@ -39,6 +39,17 @@ def clear_string(s: str,
 
     return s
 
+def compute_textlength(df: pd.DataFrame,
+                       columnname: Optional[str] = "textlength",
+                       textcolumn: Optional[str] = "text") -> pd.DataFrame:
+    """ Add a column with the textlength of a text column
+        of a DataFrame.
+    """
+
+    df[columnname] = df[textcolumn].apply(lambda x: len(word_tokenize(x)))
+
+    return df
+
 def get_file_list(path: str) -> List[str]:
     """ Returns a list with files of a given directory. """
     return [file.stem for file in Path(path).glob("**/*.txt") if file.is_file()]
@@ -149,19 +160,19 @@ def poems_to_df(path: str,
             else:
                 tmp[filename]["poem"] += poem
 
-
     tmp2 = {}
     for k, v in tmp.items():
         tmp2[k] = [v["poet"],
                    v["title"],
                    v["year"],
-                   v["poem"]]
+                   v["poem"],
+                   len(word_tokenize(v["poem"]))]
 
 
     logging.info("Creating the DataFrame.")
     # dict to dataframe
     df = pd.DataFrame.from_dict(tmp2, orient="index").reset_index()
-    df.columns = ["filename", "poet", "title", "year", "poem"]  
+    df.columns = ["filename", "poet", "title", "year", "poem", "poemlength"]  
 
 
     logging.info(f"Remove poets with less than 6 poems.")
@@ -216,6 +227,13 @@ def prose_to_df(path: str,
     df.columns = ["filename", "author", "title", 
                   "year", "textlength", "text"]
     
+    mean = np.mean(df["textlength"])
+    logging.info(f"Remove works with less words than the mean (= {mean}).")
+    df = df[df["textlength"] > mean] 
+
+    logging.info(f"Remove authors with less than 6 works.")
+    df = df.groupby("author").filter(lambda x: len(x) > 5)   
+
     if not keep_unzipped:
         logging.info(f"Unzipped files will be deleted. `keep_unzipped = True` prevents this.")
         shutil.rmtree('Corpus of German-Language Fiction', ignore_errors=True)
@@ -226,7 +244,8 @@ def prose_to_df(path: str,
 
 def speeches_to_df(path: str, 
                    used_dataset: Optional[str] = "Bundesregierung.xml",
-                   zip_file: Optional[str] = "German-Political-Speeches-Corpus.zip") -> pd.DataFrame:
+                   zip_file: Optional[str] = "German-Political-Speeches-Corpus.zip",
+                   keep_unzipped: Optional[bool] = False) -> pd.DataFrame:
     """ Takes a path to the Zipfile 'German-Political-Speeches-Corpus.zip' and 
         returns a DataFrame. Only the XML-file 'Bundesregierung.xml' will be used.
 
@@ -238,24 +257,30 @@ def speeches_to_df(path: str,
     df = None
 
     zip_path = os.path.join(path, zip_file)
+    output_path = os.path.join(path, zip_file[:-4])
 
     with zipfile.ZipFile(zip_path) as file:
-        file.extractall(used_dataset, path=path)
+        file.extractall(path=output_path)
         
-    xml_path = os.path.join(path, used_dataset)
+    xml_path = os.path.join(output_path, used_dataset)
     with open(xml_path, mode="rb") as file:
         xml_document = xmltodict.parse(file)
         nodes = xml_document['collection']['text']
         df = pd.DataFrame({'speaker' : [t['@person'] for t in nodes],
                            'title' : [t['@titel'] for t in nodes],
-                           'speech' : [t['rohtext'] for t in nodes]})
+                           'speech' : [t['rohtext'] for t in nodes],
+                           'speechlength': [len(word_tokenize(t['rohtext'])) for t in nodes]})
+
+
+    if not keep_unzipped:
+        logging.info(f"Unzipped files will be deleted. `keep_unzipped = True` prevents this.")
+        shutil.rmtree(zip_file[:-4], ignore_errors=True)
 
     return df
 
 
 def main():
 
-    # TODO: evtl. mehr corpora hinzufügen
     if args.corpus_name == "prose":
         df = prose_to_df(args.path)
         logging.info(f"Writing csv-file to corpora/")
@@ -273,7 +298,6 @@ if __name__ == "__main__":
     
     parser = argparse.ArgumentParser(prog="texts_to_csv", description="Saves text corpora in csv files.")
     parser.add_argument("path", type=str, help="Path to the directories.")
-    #TODO: help ergänzen
     parser.add_argument("--corpus_name", "-cn", type=str, default="prose", help="Indicates the corpus type. Default is 'prose'. Other value are 'speeches' and 'poems'.")
     args = parser.parse_args()
 
