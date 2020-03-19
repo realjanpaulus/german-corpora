@@ -1,10 +1,10 @@
 # german-corpora
-Compilation of several german corpora as csv-files for text classification. 
+Compilation of several german corpora as csv-files. Priority use is intended for text classification.
 
 
 ## Note
 
-I'm not the author of most of the corpora. The authors of the respective original corpora are listed under section **Corpora sources**. Changes to the original corpora are listed in the column "changes". The corpora were converted to csv files using the "texts_to_csv.py" script. Instructions for using the script can be found in the **Usage** section.
+I'm not the author of most of the corpora. The authors of the respective original corpora are listed under section **Corpora sources**. Changes to the original corpora are listed in the column "changes". The corpora, which were not previously in csv file format, were converted to csv files using the "texts_to_csv.py" script. Instructions for using the script can be found in the **Getting started** section.
 
 ## Corpora sources
 
@@ -32,7 +32,24 @@ Every corpus csv file contains the string "german_" before their name (e.g. `ger
 
 
 
+## Installation
+
+Required: Python 3.6+
+
+`$ pip install -r requirements.txt`
+
+
+### Pipenv
+
+```
+$ pipenv install
+
+$ pipenv shell
+```
+
 ## Getting started
+
+### `texts_to_csv.py` script
 
 ```
 
@@ -51,22 +68,6 @@ optional arguments:
 
 ```
 
-### Requirements
-
-Required: Python 3.6+
-
-`$ pip install -r requirements.txt`
-
-
-#### Pipenv
-
-```
-$ pipenv install
-
-$ pipenv shell
-```
-
-TODO: requirements.txt / Pipfile
 
 ### Building your own corpus variation
 
