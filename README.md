@@ -12,12 +12,12 @@ Every corpus csv file contains the string "german_" before their name (e.g. `ger
 
 | corpus | original name  | author(s) | content | changes |
 | --- | --- | --- | --- | --- |
-| news |  [10kGNAD](https://tblock.github.io/10kGNAD/) (**License**: CC BY-NC-SA 4.0) | Timo Block | 10273 german language news articles, divided into 9 categories | Replaced semicolon delimiter with comma delimiter. |
-| poems | [DLK_v3](https://github.com/tnhaider/DLK) | Thomas Haider, Steffen Eger | 30731 poems in German language by 197 different german and non-german poets. | Poets with less than 6 poems, empty poems and poems without a specific author (= 'N. N.') were removed from the corpus. Poems without titles were titled with "UNTITLED". |
-| prose | [Corpus of German-Language Fiction](https://figshare.com/articles/Corpus_of_German-Language_Fiction_txt_/4524680/1) (**License**: CC BY 4.0)| Frank Fischer, Jannik Strötgen | 1963 german prose works from 148 different german authors. | Only prose texts from the folder 'corpus-of-german-fiction-txt' where used i.e. only texts from german authors. Due to Githhubs file size limitations, authors with less than 6 works were removed from the original corpus (the original corpus contained 2735 german prose works from 549 different german authors). In addition, most of the meta-information at the beginning of each work has been removed. |
-| speeches | [German Political Speeches Corpus](https://adrien.barbaresi.eu/corpora/speeches/#data) (**License**: CC BY-SA 4.0) | Adrien Barbaresi | 2983 speeches from 46 different german speakers. | Only speeches from the file "Bundesregierung.xml" were used. |
-| wiki | [wikicorpus_v2](https://github.com/realjanpaulus/german_text_classification_nlp) | Jan Paulus | 6000 tokenized wikipedia articles, divided into 30 different categories. | Deleted "id" and "Unnamed: 0" column. |
-| wiki_small | [small wikicorpus_v2](https://github.com/realjanpaulus/german_text_classification_nlp) | Jan Paulus | 440 tokenized wikipedia articles, divided into 10 different categories. | Deleted "id" and "Unammed: 0" column. |
+| news |  [10kGNAD](https://tblock.github.io/10kGNAD/) (**License**: CC BY-NC-SA 4.0) | Timo Block | 10273 german language news articles, divided into 9 categories. | Replaced semicolon delimiter with comma delimiter. Added textlength column.|
+| poems | [DLK_v3](https://github.com/tnhaider/DLK) | Thomas Haider, Steffen Eger | 30731 poems in German language by 197 different german and non-german poets. | Poets with less than 6 poems, empty poems and poems without a specific author (= 'N. N.') were removed from the corpus. Poems without titles were titled with "UNTITLED". Added textlength column.|
+| prose | [Corpus of German-Language Fiction](https://figshare.com/articles/Corpus_of_German-Language_Fiction_txt_/4524680/1) (**License**: CC BY 4.0)| Frank Fischer, Jannik Strötgen | 492 german prose works from 50 different german authors. | Only prose texts from the folder 'corpus-of-german-fiction-txt' where used i.e. only texts from german authors. Due to Githhubs file size limitations, authors with less than 6 works were removed from the corpus (the original corpus contained 2735 german prose works from 549 different german authors). In addition, texts with a length less than the mean of all texts and most of the meta-information at the beginning of each work has been removed. Added textlength column.|
+| speeches | [German Political Speeches Corpus](https://adrien.barbaresi.eu/corpora/speeches/#data) (**License**: CC BY-SA 4.0) | Adrien Barbaresi | 2983 speeches from 46 different german speakers. | Only speeches from the file "Bundesregierung.xml" were used. Added textlength column.|
+| wiki | [wikicorpus_v2](https://github.com/realjanpaulus/german_text_classification_nlp) | Jan Paulus | 6000 tokenized wikipedia articles, divided into 30 different categories. | Deleted "id" and "Unnamed: 0" column. Added textlength column.|
+| wiki_small | [small wikicorpus_v2](https://github.com/realjanpaulus/german_text_classification_nlp) | Jan Paulus | 440 tokenized wikipedia articles, divided into 10 different categories. | Deleted "id" and "Unammed: 0" column. Added textlength column.|
 
 ## Structure of the available csv-files
 
@@ -30,7 +30,9 @@ Every corpus csv file contains the string "german_" before their name (e.g. `ger
 | *german_wiki* | category | text |
 | *german_wiki_small* | category | text |
 
-## Usage
+
+
+## Getting started
 
 ```
 
@@ -45,14 +47,24 @@ positional arguments:
 optional arguments:
   -h, --help            show this help message and exit
   --corpus_name CORPUS_NAME, -cn CORPUS_NAME 
-                        Indicates the corpus type. Default is 'prose'. Other value are
-                        'speeches'.
+                        Indicates the corpus type. Default is 'prose'. Other value are 'speeches' and 'poems'.
 
 ```
 
 ### Requirements
 
 Required: Python 3.6+
+
+`$ pip install -r requirements.txt`
+
+
+#### Pipenv
+
+```
+$ pipenv install
+
+$ pipenv shell
+```
 
 TODO: requirements.txt / Pipfile
 
