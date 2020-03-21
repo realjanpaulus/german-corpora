@@ -276,6 +276,12 @@ def speeches_to_df(path: str,
         logging.info(f"Unzipped files will be deleted. `keep_unzipped = True` prevents this.")
         shutil.rmtree(zip_file[:-4], ignore_errors=True)
 
+    logging.info(f"Remove speakers with less than 6 speaches.")
+    df = df.groupby("speaker").filter(lambda x: len(x) > 5)
+
+    logging.info("Remove speaker 'k.A.'")
+    df = df[df["speaker"] != 'k.A.']
+
     return df
 
 
