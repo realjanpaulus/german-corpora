@@ -121,58 +121,95 @@ def get_metadata(filename: str, file: str) -> List:
 
 
 def poems_to_df(path: str,
-                used_dataset: Optional[str] = "deutsches.lyrik.korpus.v3.noduplicates.json"):
+                used_dataset: Optional[str] = "deutsches.lyrik.korpus.v4.noduplicates.intactpoems.json"):
     """ Takes a path to a poem jsonfile and stores the
         title, author and text into a DataFrame.
     """
+
+    """
+    "38237_s5.13": {"lines": ["\u00bbMich gel\u00fcstet,\u00ab sprach der K\u00f6nig,", 
+                              "\u00bbMich gel\u00fcstet, o Dadanes,", 
+                              "Deines schwarzen Partherhengstes,", 
+                              "Der nicht scheut die Elefanten,", 
+                              "Den du rittst in sieben Schlachten,", 
+                              "Den dein Vater schon geritten, \u2013", 
+                              "Schenkst dem K\u00f6nig du das Ro\u00df?\u00ab"], 
+                  "title": "Ein K\u00f6nigsspiel", 
+                  "author": "Dahn, Felix", 
+                  "year": 1873},
+    """
     logging.info(f"Extracting json file contents.")
+
     df = None
-
     json_path = os.path.join(path, used_dataset)
-
     tmp = {}
 
 
     with open(json_path) as jsonfile:
         data = json.load(jsonfile)
 
+        
         for k, v in data.items():
+            poemid = k.split("_")[0]
+            stanzano = k.split("_")[1]
+            stanzaid = int(stanzano.split(".")[0][1:])
+            noofstanzainpoem = int(stanzano.split(".")[-1])
+
             poet = v["author"]
             title = v["title"]
             year = v["year"]
-            poem = " ".join(v["lines"])
-
+            lines = " ".join(v["lines"])
 
             title = clear_string(title, "UNTITLED")
             poet = clear_string(poet, "N.U.")
             year = clear_string(str(year), "0")
             year = int(year)
-            poem = clear_string(poem, "NO CONTENT")
-                        
+            lines = clear_string(lines, "NO CONTENT")
 
             filename = poet + "_" + title + "_" + str(year)
 
-            if filename not in tmp:
-                tmp[filename] = {"poet" : poet,
-                                 "title" : title,
-                                 "year" : year,
-                                 "poem": poem}
+            if poemid not in tmp:
+                tmp[poemid] = {stanzaid : {"filename" : filename,
+                                           "poet" : poet,
+                                           "title" : title,
+                                           "year" : year,
+                                           "lines": lines}}
+                #tmp[poemid]["maxstanza"] = noofstanzainpoem
             else:
-                tmp[filename]["poem"] += poem
+                new_entry = {stanzaid : {"filename" : filename,
+                                         "poet" : poet,
+                                         "title" : title,
+                                         "year" : year,
+                                         "lines": lines}}
+                try:
+                    tmp[poemid].update(new_entry)
+                except:
+                    print(poemid)
+                
+    
+    poems = {}
+    
+    for poemid, v in tmp.items():
+        sorted_v = {sid: v[sid] for sid in sorted(v)}
+        poem = ""
+        for sid, v_dict in sorted_v.items():
+            poem += v_dict["lines"]
+            filename = v_dict["filename"]
+            poet = v_dict["poet"]
+            title = v_dict["title"]
+            year = v_dict["year"]
+        poemlength = len(word_tokenize(poem))
 
-    tmp2 = {}
-    for k, v in tmp.items():
-        tmp2[k] = [v["poet"],
-                   v["title"],
-                   v["year"],
-                   v["poem"],
-                   len(word_tokenize(v["poem"]))]
-
+        poems[poemid] = [filename, poet, title, year, poem, poemlength]
+    
+           
+    
 
     logging.info("Creating the DataFrame.")
     # dict to dataframe
-    df = pd.DataFrame.from_dict(tmp2, orient="index").reset_index()
-    df.columns = ["filename", "poet", "title", "year", "poem", "poemlength"]  
+    df = pd.DataFrame.from_dict(poems, orient="index").reset_index()
+    df.columns = ["pid", "filename", "poet", "title", 
+                  "year", "poem", "poemlength"]  
 
 
     logging.info(f"Remove poets with less than 6 poems.")
@@ -184,7 +221,8 @@ def poems_to_df(path: str,
     logging.info(f"Remove empty poems.")
     df = df[df["poem"] != 'NO CONTENT']
 
-    return df  
+    return df 
+
 
 
 def prose_to_df(path: str,
