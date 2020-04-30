@@ -12,9 +12,9 @@ Every corpus csv file contains the string "german_" before their name (e.g. `ger
 
 | corpus | original name  | author(s) | content | paper |
 | --- | --- | --- | --- | --- |
-| news |  [10kGNAD](https://tblock.github.io/10kGNAD/) (**License**: CC BY-NC-SA 4.0) | Timo Block | 10273 german language news articles, divided into 9 categories. | - | 
-| poems | [DLK_v4](https://github.com/tnhaider/DLK) (**License**: CC BY 4.0)  | Thomas Haider, Steffen Eger | 59081 poems in German language by 232 different german and non-german poets. | https://www.aclweb.org/anthology/W19-4727/ |
-| prose | [Corpus of German-Language Fiction](https://figshare.com/articles/Corpus_of_German-Language_Fiction_txt_/4524680/1) (**License**: CC BY 4.0)| Frank Fischer, Jannik Strötgen | 492 german prose works from 50 different german authors. | - |
+| news |  [10kGNAD](https://tblock.github.io/10kGNAD/) (**License**: CC BY-NC-SA 4.0) | Timo Block | 10273 german language news articles, divided into 9 categories. | <a href="https://dl.acm.org/doi/10.1145/3077136.3080711">SCHABUS, Dietmar / SKOWRON, Marcin / TRAPP, Martin, One Million Posts: A Data Set of German Online Discussions</a> (10kGNAD predecessor) | 
+| poems | [DLK_v4](https://github.com/tnhaider/DLK) (**License**: CC BY 4.0)  | Thomas Haider, Steffen Eger | 59081 poems in German language by 232 different german and non-german poets. | <a href="https://www.aclweb.org/anthology/W19-4727/">HAIDER, Thomas/ EGER, Steffen, Semantic Change and Emerging Tropes In a Large Corpus of New High German Poetry</a> |
+| prose | [Corpus of German-Language Fiction](https://figshare.com/articles/Corpus_of_German-Language_Fiction_txt_/4524680/1) (**License**: CC BY 4.0)| Frank Fischer, Jannik Strötgen | 492 german prose works from 50 different german authors. | <a href="https://figshare.com/articles/Corpus_of_German-Language_Fiction_txt_/4524680/1">FISCHER, Frank, STRÖTGEN, Jannik, Corpus of German-Language Fiction</a> |
 | speeches | [German Political Speeches Corpus](https://adrien.barbaresi.eu/corpora/speeches/#data) (**License**: CC BY-SA 4.0) | Adrien Barbaresi | 2917 speeches from 13 different german speakers. | - |
 | wiki | [wikicorpus_v2](https://github.com/realjanpaulus/german_text_classification_nlp) | Jan Paulus | 6000 tokenized wikipedia articles, divided into 30 different categories. | - |
 | wiki_small | [small wikicorpus_v2](https://github.com/realjanpaulus/german_text_classification_nlp) | Jan Paulus | 440 tokenized wikipedia articles, divided into 10 different categories. | - |
