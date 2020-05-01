@@ -121,23 +121,12 @@ def get_metadata(filename: str, file: str) -> List:
 
 
 def poems_to_df(path: str,
+                min_works: int,
                 used_dataset: Optional[str] = "deutsches.lyrik.korpus.v4.noduplicates.intactpoems.json"):
     """ Takes a path to a poem jsonfile and stores the
         title, author and text into a DataFrame.
     """
 
-    """
-    "38237_s5.13": {"lines": ["\u00bbMich gel\u00fcstet,\u00ab sprach der K\u00f6nig,", 
-                              "\u00bbMich gel\u00fcstet, o Dadanes,", 
-                              "Deines schwarzen Partherhengstes,", 
-                              "Der nicht scheut die Elefanten,", 
-                              "Den du rittst in sieben Schlachten,", 
-                              "Den dein Vater schon geritten, \u2013", 
-                              "Schenkst dem K\u00f6nig du das Ro\u00df?\u00ab"], 
-                  "title": "Ein K\u00f6nigsspiel", 
-                  "author": "Dahn, Felix", 
-                  "year": 1873},
-    """
     logging.info(f"Extracting json file contents.")
 
     df = None
@@ -212,20 +201,26 @@ def poems_to_df(path: str,
                   "year", "poem", "poemlength"]  
 
 
-    logging.info(f"Remove poets with less than 6 poems.")
-    df = df.groupby("poet").filter(lambda x: len(x) > 5)
-
     logging.info(f"Remove poet with no name (= 'N. N.,').")
     df = df[df["poet"] != 'N. N.,']
 
     logging.info(f"Remove empty poems.")
     df = df[df["poem"] != 'NO CONTENT']
 
+
+    logging.info(f"Remove poets with less or equal than {min_works} poems.")
+    df = df.groupby("poet").filter(lambda x: len(x) > min_works)
+
+    
+
+    
+
     return df 
 
 
 
 def prose_to_df(path: str,
+                min_works: int,
                 used_dataset: Optional[str] = "corpus-of-german-fiction-txt",
                 zip_file: Optional[str] = "CorpusofGermanLanguageFiction.zip",
                 keep_unzipped: Optional[bool] = False) -> pd.DataFrame:
@@ -269,8 +264,9 @@ def prose_to_df(path: str,
     logging.info(f"Remove works with less words than the mean (= {mean}).")
     df = df[df["textlength"] > mean] 
 
-    logging.info(f"Remove authors with less than 6 works.")
-    df = df.groupby("author").filter(lambda x: len(x) > 5)   
+    logging.info(f"Remove authors with less or equal than {min_works} works.")
+    df = df.groupby("author").filter(lambda x: len(x) > min_works)   
+
 
     if not keep_unzipped:
         logging.info(f"Unzipped files will be deleted. `keep_unzipped = True` prevents this.")
@@ -281,6 +277,7 @@ def prose_to_df(path: str,
 
 
 def speeches_to_df(path: str, 
+                   min_works: int,
                    used_dataset: Optional[str] = "Bundesregierung.xml",
                    zip_file: Optional[str] = "German-Political-Speeches-Corpus.zip",
                    keep_unzipped: Optional[bool] = False) -> pd.DataFrame:
@@ -314,8 +311,8 @@ def speeches_to_df(path: str,
         logging.info(f"Unzipped files will be deleted. `keep_unzipped = True` prevents this.")
         shutil.rmtree(zip_file[:-4], ignore_errors=True)
 
-    logging.info(f"Remove speakers with less than 6 speaches.")
-    df = df.groupby("speaker").filter(lambda x: len(x) > 5)
+    logging.info(f"Remove speakers with less or equal than {min_works} speaches.")
+    df = df.groupby("speaker").filter(lambda x: len(x) > min_works)
 
     logging.info("Remove speaker 'k.A.'")
     df = df[df["speaker"] != 'k.A.']
@@ -326,23 +323,24 @@ def speeches_to_df(path: str,
 def main():
 
     if args.corpus_name == "prose":
-        df = prose_to_df(args.path)
+        df = prose_to_df(args.path, args.min_works)
         logging.info(f"Writing csv-file to corpora/")
         df.to_csv("corpora/german_prose.csv", index=False)
     elif args.corpus_name == "speeches":
-        df = speeches_to_df(args.path)
+        df = speeches_to_df(args.path, args.min_works)
         logging.info(f"Writing csv-file to corpora/")
         df.to_csv("corpora/german_speeches.csv", index=False)
     elif args.corpus_name == "poems":
-        df = poems_to_df(args.path)
+        df = poems_to_df(args.path, args.min_works)
         logging.info(f"Writing csv-file to corpora/")
-        df.to_csv("corpora/german_poems.csv", index=False)
+        df.to_csv("corpora/german_poems1900.csv", index=False)
 
 if __name__ == "__main__":
     
     parser = argparse.ArgumentParser(prog="texts_to_csv", description="Saves text corpora in csv files.")
     parser.add_argument("path", type=str, help="Path to the directories.")
     parser.add_argument("--corpus_name", "-cn", type=str, default="prose", help="Indicates the corpus type. Default is 'prose'. Other value are 'speeches' and 'poems'.")
+    parser.add_argument("--min_works", "-mw", type=int, default=0, help="Indicates the minimum number of texts an author needs to be included in the corpus. Default value is zero, so every author will be included.")
     args = parser.parse_args()
 
     main()
